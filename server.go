@@ -17,7 +17,8 @@ import (
 
 var Db *sql.DB
 
-const coursePath = "/courses"
+const apiPath = "/api"
+const coursePath = "courses"
 
 type Course struct {
 	CourseID   int     `json: "courseid"`
@@ -91,9 +92,9 @@ func handlesCourses(w http.ResponseWriter, r *http.Request) {
 
 func handleRequests(coursePath string) {
 	coursesHandler := http.HandlerFunc(handlesCourses)
-	http.Handle(fmt.Sprintf("%s/", coursePath), cors.CorsMiddleware(coursesHandler))
+	http.Handle(fmt.Sprintf("%s/%s/", apiPath, coursePath), cors.CorsMiddleware(coursesHandler))
 	courseHandler := http.HandlerFunc(handleCourses)
-	http.Handle("/course", cors.CorsMiddleware(courseHandler))
+	http.Handle(fmt.Sprintf("%s/%s", apiPath, coursePath), cors.CorsMiddleware(courseHandler))
 }
 
 func SetupDB() {
